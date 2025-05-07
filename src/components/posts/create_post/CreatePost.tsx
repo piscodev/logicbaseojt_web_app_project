@@ -12,6 +12,8 @@ import {
     useMediaQuery,
     useTheme,
 } from "@mui/material";
+import { nl2br } from "@/lib/TextSpacingConv";
+import { sanitizeHTML } from "@/lib/Sanitize";
 
 interface PostItemProps
 {
@@ -55,6 +57,8 @@ const PostItem: React.FC<PostItemProps> = ({ post }) =>
     const theme = useTheme()
     const isSmall = useMediaQuery(theme.breakpoints.down("sm"))
 
+    const safeContent = sanitizeHTML(nl2br(post.content))
+
     return (
         <>
             <article key={post.post_id} aria-labelledby={`post-article-${post.post_id}`}>
@@ -88,7 +92,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) =>
                 </div>
 
                 <div className="mt-2 space-y-4 text-sm text-gray-700">
-                    <p className="p-3">{post.content}</p>
+                    <p className="p-3" dangerouslySetInnerHTML={{ __html: safeContent }}></p>
                 </div>
 
                 {/* Image Gallery */}

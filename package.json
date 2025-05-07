@@ -19,7 +19,9 @@
     "@mui/material": "^7.1.0",
     "@mui/material-nextjs": "^7.0.2",
     "bcryptjs": "^3.0.2",
+    "dompurify": "^3.2.5",
     "dotenv": "^16.5.0",
+    "jsdom": "^26.1.0",
     "mysql2": "^3.14.0",
     "next": "15.3.0",
     "next-auth": "^5.0.0-beta.25",
@@ -32,6 +34,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^20",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19",
