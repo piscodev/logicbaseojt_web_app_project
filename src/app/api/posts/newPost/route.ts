@@ -1,10 +1,9 @@
 import pool from "@/lib/database/db";
 import Snowflake from "@/lib/snowflake_tinapa/snowflake";
 import { FieldPacket, ResultSetHeader } from "mysql2";
-import { NextApiResponse } from "next/dist/types";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest, res: NextApiResponse)
+export async function POST(req: NextRequest)
 {
     const { userId, content, mediaUrl, mediaType } = await req.json()
     // console.log("Received data:", { userId, content, mediaUrl, mediaType })
