@@ -1,6 +1,6 @@
 import { auth } from "@/auth"
 import pool from "@/lib/database/db"
-import { FieldPacket, ResultSetHeader } from "mysql2"
+import { FieldPacket } from "mysql2"
 import { NextResponse } from "next/server"
 
 interface UserRow
@@ -23,12 +23,21 @@ export async function GET()
     {
         conn = await pool.getConnection()
 
-        const recommendQuery = "SELECT user_id, first_name, last_name, profile_image FROM users WHERE user_id != ? AND last_login IS NOT NULL ORDER BY last_login DESC LIMIT 5"
-        const [rows]: [UserRow[], FieldPacket[]] = await conn.query(recommendQuery, [session.user.id]) as [UserRow[], FieldPacket[]]
+        // const recommendQuery = "SELECT user_id, first_name, last_name, profile_image FROM users WHERE user_id != ? AND last_login IS NOT NULL ORDER BY last_login DESC LIMIT 5"
+        const recommendQuery = `
+            SELECT user_id, first_name, last_name, profile_image
+            FROM users
+            WHERE user_id != ?
+              AND last_login IS NOT NULL
+              AND user_id NOT IN (
+                SELECT followed_user_id FROM followers WHERE user_id = ?
+              )
+            ORDER BY last_login DESC
+            LIMIT 5
+        `
+        const [rows]: [UserRow[], FieldPacket[]] = await conn.query(recommendQuery, [session.user.id, session.user.id]) as [UserRow[], FieldPacket[]]
         // if (rows.length === 0)
         //     return NextResponse.json({ type: "error", message: "No recommendations found!" }, { status: 404 })
-
-        console.log("Recommendations:", rows)
 
         return NextResponse.json(rows, { status: 200 })
     } catch (error)

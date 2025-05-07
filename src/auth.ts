@@ -8,13 +8,12 @@ import db from "./lib/database/db";
 
 interface userRow
 {
-    user_id: bigint
+    user_id: string
 }
 
 export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth(
 {
     ...authConfig,
-    //adapter: PrismaAdapter(prisma),
     session: {
         strategy: "jwt",
         maxAge: 86400, // session expires in 1 day
