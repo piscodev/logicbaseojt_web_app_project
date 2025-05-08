@@ -33,12 +33,13 @@ const PostComponents: React.FC<PostCommentProps> = ({ likes, comments, postId, u
                 }),
             })
 
-            if (!res.ok) 
-                throw new Error("Failed to check like")
+            if (!res.ok)
+                setLiked(false)
+                // console.error("Failed to check like")
 
             const data = await res.json()
             if (data.type === "error")
-                throw new Error(data.message)
+                console.error(data.message)
 
             setLiked(data.isLike)
         } catch (error) {

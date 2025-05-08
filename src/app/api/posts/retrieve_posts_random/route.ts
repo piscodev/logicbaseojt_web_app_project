@@ -35,30 +35,61 @@ export async function GET()
         conn = await pool.getConnection()
 
         // const queryPosts = "SELECT fw.*, p.*, u.first_name, u.last_name, u.profile_image FROM followers AS fw JOIN posts AS p ON p.user_id = fw.followed_user_id LEFT JOIN users as u ON u.user_id = fw.followed_user_id WHERE fw.user_id = ? ORDER BY p.created_at DESC"
+        // const queryPosts =
+        // `
+        //     SELECT 
+        //         fw.*, 
+        //         p.*, 
+        //         u.first_name, 
+        //         u.last_name, 
+        //         u.profile_image,
+        //         COALESCE(c.comment_count, 0) AS comment_count
+        //     FROM followers AS fw
+        //     JOIN posts AS p ON p.post_user_id = fw.followed_user_id
+        //     LEFT JOIN users AS u ON u.user_id = fw.followed_user_id
+        //     LEFT JOIN (
+        //         SELECT comment_post_id, COUNT(*) AS comment_count
+        //         FROM comments
+        //         GROUP BY comment_post_id
+        //     ) AS c ON c.comment_post_id = p.post_id
+        //     WHERE fw.user_id = ?
+        //     ORDER BY p.created_at DESC
+        // `
+
         const queryPosts =
         `
             SELECT 
-                fw.*, 
-                p.*, 
-                u.first_name, 
-                u.last_name, 
+                p.*,
+                u.first_name,
+                u.last_name,
                 u.profile_image,
-                COALESCE(c.comment_count, 0) AS comment_count
-            FROM followers AS fw
-            JOIN posts AS p ON p.post_user_id = fw.followed_user_id
-            LEFT JOIN users AS u ON u.user_id = fw.followed_user_id
+                COALESCE(c.comment_count, 0) AS comment_count,
+                ? AS user_id, -- always output viewer's user_id
+                f.followed_user_id   -- only filled if the post is from a followed user
+            FROM posts AS p
+            JOIN users AS u ON u.user_id = p.post_user_id
             LEFT JOIN (
                 SELECT comment_post_id, COUNT(*) AS comment_count
                 FROM comments
                 GROUP BY comment_post_id
             ) AS c ON c.comment_post_id = p.post_id
-            WHERE fw.user_id = ?
+            LEFT JOIN followers AS f
+                ON f.followed_user_id = p.post_user_id
+                AND f.user_id = ?  -- viewer follows this user
+            WHERE p.post_user_id = ?
+            OR p.post_user_id IN (
+                SELECT followed_user_id
+                FROM followers
+                WHERE user_id = ?
+            )
             ORDER BY p.created_at DESC
+
         `
-        const [retrievePosts]: [PostsData[], FieldPacket[]] = await conn.query(queryPosts, [userId]) as [PostsData[], FieldPacket[]]
+        const [retrievePosts]: [PostsData[], FieldPacket[]] = await conn.query(queryPosts, [userId, userId, userId, userId]) as [PostsData[], FieldPacket[]]
 
         // if (retrievePosts.length === 0)
         //     return NextResponse.json({ type: "error", message: "No posts found!" }, { status: 404 })
+        console.log("Posts retrieved successfully!", retrievePosts)
 
         return NextResponse.json(retrievePosts, { status: 200 })
     } catch (error)

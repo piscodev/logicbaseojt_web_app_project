@@ -3,7 +3,7 @@ import { JWT } from "next-auth/jwt";
 import { authConfig } from "@/lib/auth.config";
 //import { PrismaAdapter } from "@auth/prisma-adapter";
 import Snowflake from "@/lib/snowflake_tinapa/snowflake";
-import { FieldPacket, ResultSetHeader } from "mysql2";
+import { FieldPacket } from "mysql2";
 import db from "./lib/database/db";
 
 interface userRow
