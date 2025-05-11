@@ -13,6 +13,8 @@
 * console.log("Decoded Date:", decodedDate);
 *
 */
+export const dynamic = "force-dynamic";
+
 import { hexToDec } from "./hex2dec";
 
 import dayjs from "dayjs";
