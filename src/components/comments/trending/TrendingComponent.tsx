@@ -1,3 +1,5 @@
+'use client'
+
 import { CircularProgress } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 

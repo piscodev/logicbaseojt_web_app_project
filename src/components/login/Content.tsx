@@ -6,7 +6,7 @@ import AutoFixHighRoundedIcon from '@mui/icons-material/AutoFixHighRounded';
 import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
 import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
 import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
-import { SitemarkIcon } from '@/components/login/CustomIcons';
+// import { SitemarkIcon } from '@/components/login/CustomIcons';
 
 const items = [
   {
@@ -41,7 +41,9 @@ export default function Content() {
       sx={{ flexDirection: 'column', alignSelf: 'center', gap: 4, maxWidth: 450 }}
     >
       <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-        <SitemarkIcon />
+        {/* <SitemarkIcon /> */}
+        <img src="/logo.png" alt="System X" className="h-auto w-10" />
+        <p className="pt-2 p-3">Centralized Market for Locale</p>
       </Box>
       {items.map((item, index) => (
         <Stack key={index} direction="row" sx={{ gap: 2 }}>

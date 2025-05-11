@@ -42,6 +42,7 @@
     "@types/react-toastify": "^4.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
+    "eslint-plugin-react": "^7.37.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
