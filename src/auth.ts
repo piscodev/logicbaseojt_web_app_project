@@ -6,6 +6,8 @@ import Snowflake from "@/lib/snowflake_tinapa/snowflake";
 import { FieldPacket } from "mysql2";
 import db from "./lib/database/db";
 
+export const dynamic = "force-dynamic";
+
 interface userRow
 {
     user_id: string

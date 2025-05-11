@@ -2,6 +2,8 @@
 import Snowflake from '@/lib/snowflake_tinapa/snowflake';
 import React from 'react'
 
+export const dynamic = "force-dynamic";
+
 const Testering = () =>
 {
     const snowflake = new Snowflake();
