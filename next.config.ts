@@ -19,6 +19,9 @@ const nextConfig: NextConfig =
       },
     ],
   },
+  env: {
+    TZ: 'Asia/Manila',
+  },
 }
 
 export default nextConfig

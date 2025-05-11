@@ -18,30 +18,27 @@ const pool = mysql.createPool({
   connectTimeout: 60000,
   timezone: '+08:00',
   supportBigNumbers: true,
-  bigNumberStrings: true, // important!
+  // bigNumberStrings: true, // important!
 })
 
-console.log("Established database connection pool")
 export const getConnection = promisify(pool.getConnection).bind(pool)
 
-// Function to query the database
-
 export const query = async (sql: string, params: unknown[]) =>
-  {
+{
     let connection
     try
     {
-      connection = await pool.getConnection()
-      const [rows]: [unknown[], FieldPacket[]] = await connection.query(sql, params) as [unknown[], FieldPacket[]]
-      return rows
+        connection = await pool.getConnection()
+        const [rows]: [unknown[], FieldPacket[]] = await connection.query(sql, params) as [unknown[], FieldPacket[]]
+
+        return rows
     } catch (error) {
-      console.error('Database query error:', error)
+        console.error('Database query error:', error)
     } finally {
 
       if (connection)
-        connection.release()
+          connection.release()
     }
 }
 
-// Export the pool to be used in other modules
 export default pool
