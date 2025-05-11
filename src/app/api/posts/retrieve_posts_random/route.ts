@@ -89,7 +89,6 @@ export async function GET()
 
         // if (retrievePosts.length === 0)
         //     return NextResponse.json({ type: "error", message: "No posts found!" }, { status: 404 })
-        console.log("Posts retrieved successfully!", retrievePosts)
 
         return NextResponse.json(retrievePosts, { status: 200 })
     } catch (error)
