@@ -18,17 +18,17 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth(
         strategy: "jwt",
         maxAge: 86400, // session expires in 1 day
     },
-    jwt: {
-        encode: async ({ token, secret }) => {
-            return JSON.stringify(token);
-        },
-        decode: async ({ token, secret }) => {
-            return JSON.parse(token || "{}");
-        }
-    },
+    // jwt: {
+    //     encode: async ({ token, secret }) => {
+    //         return JSON.stringify(token);
+    //     },
+    //     decode: async ({ token, secret }) => {
+    //         return JSON.parse(token || "{}");
+    //     }
+    // },
     pages: {
         signIn: "/",
-        signOut: "/",
+        signOut: "/logout",
     },
     callbacks:
     {

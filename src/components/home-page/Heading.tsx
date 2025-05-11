@@ -29,11 +29,7 @@ export default function Header() {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center gap-4">
             <a href="#">
-              <img
-                src="https://www.freepnglogos.com/uploads/512x512-logo-png/512x512-logo-five-pointed-star-logo-icon-icons-download-8.png"
-                alt="System X"
-                className="h-auto w-10"
-              />
+              <img src="/logo.png" alt="System X" className="h-auto w-10" />
             </a>
             <form className="relative w-full hidden md:block">
               <label htmlFor="search" className="sr-only">
@@ -52,21 +48,20 @@ export default function Header() {
             </form>
           </div>
           
-          <div className="lg:flex gap-4 items-center hidden">
-          <button
-            id="basic-button"
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
-            // className="relative rounded-full p-1 focus:outline-none focus:ring-2 focus:ring-[#006aff]"
-          >
-             <img
+          <div className="flex items-center gap-4">
+            <button
+              id="basic-button"
+              aria-controls={open ? 'basic-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+            >
+              <img
                 src={session?.user?.image ? session.user.image : "https://randomuser.me/api/portraits"}
                 alt="User"
                 className="h-8 w-8 rounded-full"
               />
-          </button>
+            </button>
           <Menu
             id="basic-menu"
             anchorEl={anchorEl}
@@ -74,6 +69,11 @@ export default function Header() {
             onClose={handleClose}
             MenuListProps={{
               'aria-labelledby': 'basic-button',
+            }}
+            sx={{
+              position: 'absolute', // Ensure it works for mobile too
+              right: '0',
+              zIndex: 9999,
             }}
           >
             {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
