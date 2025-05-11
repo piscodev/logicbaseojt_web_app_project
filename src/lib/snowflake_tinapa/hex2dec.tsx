@@ -1,4 +1,3 @@
-// hex2dec.ts
 export function hexToDec(hexStr: string): string {
   if (hexStr.substring(0, 2) === "0x") hexStr = hexStr.substring(2);
   hexStr = hexStr.toLowerCase();

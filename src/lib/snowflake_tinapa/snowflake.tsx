@@ -15,6 +15,13 @@
 */
 import { hexToDec } from "./hex2dec";
 
+import dayjs from "dayjs";
+import utc from 'dayjs/plugin/utc'
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
 interface SnowflakeOptions {
   mid?: number;
   offset?: number;
@@ -32,13 +39,15 @@ export default class Snowflake
     this.seq = 0;
     this.mid = (options?.mid || 1) % 1023;
     //this.offset = options?.offset || 0;
-    this.offset = options?.offset || new Date(process.env.ID_STAMP_OFFSET!).getTime();
+    // this.offset = options?.offset || new Date(process.env.NEXT_PUBLIC_ID_STAMP_OFFSET!).getTime();
+    this.offset = options?.offset || dayjs(process.env.NEXT_PUBLIC_ID_STAMP_OFFSET!).tz(process.env.NEXT_PUBLIC_INIT_TZ).valueOf()
     this.lastTime = 0;
   }
 
   public GenerateID(): string
   {
-    const time = Date.now();
+    const time = dayjs().tz(process.env.NEXT_PUBLIC_INIT_TZ).valueOf()
+    // const time = new Date().getTime();
     const bTime = (time - this.offset).toString(2);
 
     if (this.lastTime === time)
@@ -47,7 +56,7 @@ export default class Snowflake
       if (this.seq > 4095)
       {
         this.seq = 0;
-        while (Date.now() <= time) {}
+        while (dayjs().tz(process.env.NEXT_PUBLIC_INIT_TZ).valueOf() <= time) {}
       }
     } else this.seq = 0;
 
@@ -75,6 +84,6 @@ export default class Snowflake
     const timestamp = parseInt(bTime, 2) + this.offset;
 
     // Return the decoded date
-    return new Date(timestamp);
+    return dayjs(timestamp).tz(process.env.NEXT_PUBLIC_INIT_TZ).toDate()
   }
 }
