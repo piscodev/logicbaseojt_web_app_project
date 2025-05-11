@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 
 export const authConfig: NextAuthConfig =
 {
-  providers: [
+    providers: [
         GoogleProvider(
         {
             clientId: process.env.GOOGLE_CLIENT_ID,
@@ -21,4 +21,5 @@ export const authConfig: NextAuthConfig =
         strategy: 'jwt',
     },
     secret: process.env.NEXTAUTH_SECRET,
+    trustHost: true,
 }

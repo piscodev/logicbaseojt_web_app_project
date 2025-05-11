@@ -8,6 +8,7 @@ export async function middleware(req: NextRequest)
 {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
     // const { pathname } = req.nextUrl
+    console.log('Token:', token)
 
     if (!token)
         return NextResponse.redirect(new URL('/login', req.url))
@@ -19,5 +20,5 @@ export const config =
 {
     //   matcher: ['/((?!api|_next|favicon.ico|callback|auth|login).*)'], // exclude api, _next, favicon
     matcher: ['/((?!api/auth|_next/static|_next/image|favicon.ico|login|callback|auth|.png|assets).*)'], // exclude matcher; grabe nga fix ni pang 1 week huuuuuuaahhhhh
-    runtime: 'nodejs',
+    // runtime: 'nodejs',
 }

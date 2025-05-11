@@ -9,8 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@edgestore/react": "^0.4.0",
-    "@edgestore/server": "^0.4.0",
+    "@edgestore/react": "^0.5.0",
+    "@edgestore/server": "^0.5.0",
     "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -23,7 +23,7 @@
     "dotenv": "^16.5.0",
     "jsdom": "^26.1.0",
     "mysql2": "^3.14.1",
-    "next": "^15.4.0-canary.31",
+    "next": "^15.3.2",
     "next-auth": "^5.0.0-beta.25",
     "pusher": "^5.2.0",
     "react": "^19.1.0",
