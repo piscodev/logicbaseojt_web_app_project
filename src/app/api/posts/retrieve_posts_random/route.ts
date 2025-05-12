@@ -3,25 +3,14 @@ import { FieldPacket } from "mysql2"
 import { NextRequest, NextResponse } from "next/server"
 
 import pool from "@/lib/database/db"
+import { PostsData } from "@/app/utils/interfaces"
 
-interface PostsData
-{
-    post_id: string
-    user_id: string
-    content: string
-    media_url: string | null
-    media_type: "image" | "video" | null
-    createdAt: string
-    updatedAt: string
-}
+
 
 export async function POST(request: NextRequest)
 {
     const { offset } = await request.json()
-    // const userId = searchParams.get("profile")
-    // const offset = parseInt(searchParams.get("offset") || "0"); // Offset for pagination
     const limit = 10
-
 
     const session = await auth()
     const userId = session?.user ? session.user.id : "0"

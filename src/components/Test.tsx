@@ -6,8 +6,6 @@ import Box from "@mui/material/Box";
 import Heading from "./home-page/Heading";
 import { useSession } from "next-auth/react";
 import FollowRecommendComponent from "./sidebars/follow_recommends/FollowRecommendComponent";
-import TrendingComponent from "./comments/trending/TrendingComponent";
-import Feed from "./posts/feed/Feed";
 import { Suspense } from "react";
 import { Card, CardContent, CircularProgress, Typography } from "@mui/material";
 import React from "react";

@@ -4,6 +4,8 @@ import pool from "@/lib/database/db"
 import { FieldPacket } from "mysql2"
 import { NextResponse } from "next/server"
 
+export const dynamic = "force-dynamic"
+
 export async function GET()
 {
     const session = await auth()
