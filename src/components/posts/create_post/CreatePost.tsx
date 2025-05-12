@@ -14,28 +14,11 @@ import {
 } from "@mui/material";
 import { nl2br } from "@/lib/TextSpacingConv";
 import { sanitizeHTML } from "@/lib/Sanitize";
+import { PostItemProps } from "@/app/utils/interfaces";
 
-interface PostItemProps
-{
-    post:
-    {
-        user_id: string;
-        followed_user_id: string;
-        created_at: string;
-        updated_at: string;
-        post_id: string;
-        content: string;
-        media_url: string; // commaseparated urls
-        media_type: "image" | "video" | null;
-        total_likes: number;
-        comment_count: bigint;
-        first_name: string;
-        last_name: string;
-        profile_image: string;
-    }
-}
+// const PostItem: React.FC<{ post: PostItemProps; currentUserId: string }> = ({ post, currentUserId }) => 
+const PostItem: React.FC<{ post: PostItemProps; currentUserId: string; onDelete: (postId: string) => void }> = ({ post, currentUserId, onDelete }) =>
 
-const PostItem: React.FC<PostItemProps> = ({ post }) =>
 {
     const images = post.media_url?.split(",").map((url: string) => url.trim()) || []
 
@@ -65,34 +48,25 @@ const PostItem: React.FC<PostItemProps> = ({ post }) =>
                 <div>
                     <div className="flex space-x-3">
                         <div className="flex-shrink-0">
-                        <img
-                            className="h-10 w-10 rounded-full"
-                            src={post.profile_image}
-                            alt=""
-                        />
+                            <img className="h-10 w-10 rounded-full" src={post.profile_image} alt="" />
                         </div>
                         <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-gray-900">
-                            <a href="#" className="hover:underline">
-                            {post.first_name} {post.last_name}
-                            </a>
-                        </p>
-                        <p className="text-sm text-gray-500">
-                            <a href="#" className="hover:underline">
-                            <time dateTime={post.created_at}>
-                                {dateConv(new Date(post.created_at).getTime())}
-                            </time>
-                            </a>
-                        </p>
+                            <p className="text-sm font-medium">
+                                <a href="#" className="hover:underline">{post.first_name} {post.last_name}</a>
+                            </p>
+                            <p className="text-sm  ">
+                                <a href="#" className="hover:underline">{dateConv(post.created_at)}</a>
+                            </p>
                         </div>
                         <div className="flex flex-shrink-0 self-center">
-                            <OptionsMenu />
+                            <OptionsMenu currentUserId={currentUserId} postId={post.post_id} onDelete={onDelete} />
                         </div>
                     </div>
                 </div>
 
-                <div className="mt-2 space-y-4 text-sm text-gray-700">
-                    <p className="p-3" dangerouslySetInnerHTML={{ __html: safeContent }}></p>
+                <div className="mt-2 space-y-4 text-sm">
+                    <div className="p-3" dangerouslySetInnerHTML={{ __html: safeContent }}></div>
+                    {/* <div className="p-3" dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.content) }} /> */}
                 </div>
 
                 {/* Image Gallery */}
@@ -124,7 +98,7 @@ const PostItem: React.FC<PostItemProps> = ({ post }) =>
                     )}
                 </Dialog>
 
-                <PostComponents likes={post.total_likes} comments={post.comment_count} postId={post.post_id} userId={post.user_id} />
+                <PostComponents likes={post.total_likes} comments={post.comment_count} postId={post.post_id} userId={currentUserId} />
                 <PostComment postId={post.post_id} />
             </article>
         </>

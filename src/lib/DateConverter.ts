@@ -1,11 +1,13 @@
+import dayjs from "dayjs"
 
 function isNumeric(value: number): boolean
 {
   return typeof value === "number" && !isNaN(value) && isFinite(value)
 }
 
-export function dateConv(date: number): string
+export function dateConv(str: string): string
 {
+  const date = dayjs(str).valueOf()
   return isNumeric(date)
     ? new Date(date).toLocaleString("en-US",
       {

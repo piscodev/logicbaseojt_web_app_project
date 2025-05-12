@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import PreviousComments from './prev_comments/PreviousComments'
-import { useSession } from 'next-auth/react';
-import { Input } from '@mui/material';
+import { CircularProgress, Input } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import SendIcon from '@mui/icons-material/Send';
+import { useSession } from 'next-auth/react';
 
 
-interface PostCommentProps {
-    postId: string;
-}
-
-const PostComment: React.FC<PostCommentProps> = ({ postId }) =>
+const PostComment: React.FC<{ postId: string }> = ({ postId }) =>
 {
     const [comment, setComment] = useState([])
     const [loading, setLoading] = useState(false)
     const [newComment, setNewComment] = useState("")
     const [isComment, setIsCommenting] = useState(false)
-
     const { data: session } = useSession()
+
     // if (!session)
     // {
     //     console.error("User not logged in.")
@@ -26,34 +22,37 @@ const PostComment: React.FC<PostCommentProps> = ({ postId }) =>
 
     useEffect(() =>
     {
-        setLoading(true)
-
-        if (!loading)
-            retrieveComments()
-
-        setLoading(false)
+        retrieveComments()
     }, [])
 
     const retrieveComments = async () =>
     {
-        const res = await fetch("/api/comments/retrieve_comments",
+        setLoading(true)
+        try
         {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ postId })
-        })
+            const res = await fetch("/api/comments/retrieve_comments",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ postId })
+            })
 
-        const data = await res.json()
-        if (!res.ok)
-        {
-            console.error("Error fetching comments:", data.message)
-            return
+            const data = await res.json()
+            if (!res.ok)
+            {
+                console.error("Error fetching comments:", data.message)
+                return
+            }
+
+            setComment(data)
+            console.log("Comments data:", data)
+        }       catch (error) {
+            console.error("Network error fetching comments:", error)
+        } finally {
+            setLoading(false)
         }
-
-        setComment(data)
-        console.log("Comments data:", data)
     }
 
     const handleComment = async () =>
@@ -97,6 +96,7 @@ const PostComment: React.FC<PostCommentProps> = ({ postId }) =>
     {
         try
         {
+            setLoading(true)
             const res = await fetch("/api/comments/delete_comment",
             {
                 method: "POST",
@@ -116,12 +116,24 @@ const PostComment: React.FC<PostCommentProps> = ({ postId }) =>
             await retrieveComments() // refresh comments
         } catch (err) {
             console.error("Network error deleting comment: ", err)
+        } finally {
+            setLoading(false)
         }
     }
 
+
+    if (loading)
+    {
+        return (
+            <div className="flex justify-center items-center min-h-[100px]">
+                <p><CircularProgress size={15} /></p>
+            </div>
+        )
+    }
+
     return (
-        <div className="mt-6 border-t border-gray-200 pt-6">
-            <h3 className="text-sm font-semibold text-gray-900">Comments</h3>
+        <div className="mt-6 border-t border-gray-100 pt-6">
+            <h3 className="text-sm font-semibold">Comments</h3>
             <ul role="list" className="mt-4 space-y-4">
                 {comment && comment.map((item, index) => (
                     <PreviousComments
@@ -134,7 +146,7 @@ const PostComment: React.FC<PostCommentProps> = ({ postId }) =>
 
             {/* Add Comment Input */}
             <div className="mt-6 flex space-x-3">
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 pt-3">
                     <img className="h-6 w-6 rounded-full" src={session?.user?.image ? session.user.image : "https://randomuser.me/api/portraits/thumb/women/65.jpg"} alt="You" />
                 </div>
                 <div className="min-w-0 flex-1">
@@ -143,7 +155,6 @@ const PostComment: React.FC<PostCommentProps> = ({ postId }) =>
                         e.preventDefault()
                         await handleComment()
                     }}>
-
                         <div>
                             {/* <label htmlFor="comment" className="sr-only">Add your comment</label> */}
                             {/* <textarea
@@ -159,10 +170,9 @@ const PostComment: React.FC<PostCommentProps> = ({ postId }) =>
                                 rows={2}
                                 value={newComment} // controlled input
                                 onChange={(e) => setNewComment(e.target.value)}
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-3"
+                                className="block w-full rounded-md border-gray-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
                                 placeholder="Add a comment"
                             />
-
                         </div>
                         <div className="mt-2 flex justify-between items-center">
                             <div className="flex space-x-2">

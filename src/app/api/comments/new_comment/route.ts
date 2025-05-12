@@ -4,6 +4,8 @@ import Snowflake from "@/lib/snowflake_tinapa/snowflake"
 import { ResultSetHeader } from "mysql2"
 import { NextRequest, NextResponse } from "next/server"
 
+export const dynamic = "force-dynamic"
+
 export async function POST(request: NextRequest)
 {
     const { postId, content } = await request.json()

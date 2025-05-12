@@ -2,16 +2,7 @@ import { FieldPacket } from "mysql2"
 import { NextRequest, NextResponse } from "next/server"
 
 import pool from "@/lib/database/db"
-
-interface CommentsData
-{
-    comment_id: string
-    comment_post_id: string
-    comment_user_id: string
-    content: string
-    createdAt: string
-    updatedAt: string
-}
+import { CommentsData } from "@/app/utils/interfaces"
 
 export async function POST(req: NextRequest)
 {

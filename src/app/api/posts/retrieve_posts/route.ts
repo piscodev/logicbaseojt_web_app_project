@@ -3,17 +3,7 @@ import { FieldPacket } from "mysql2"
 import { NextResponse } from "next/server"
 
 import pool from "@/lib/database/db"
-
-interface PostsData
-{
-    post_id: string
-    user_id: bigint
-    content: string
-    media_url: string | null
-    media_type: "image" | "video" | null
-    createdAt: string
-    updatedAt: string
-}
+import { PostsData } from "@/app/utils/interfaces"
 
 export async function GET()
 {

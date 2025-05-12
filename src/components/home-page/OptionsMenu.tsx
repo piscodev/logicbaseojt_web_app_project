@@ -1,88 +1,124 @@
 'use client'
 
-import { useState } from "react";
+import React, { useState } from 'react';
+import {
+    IconButton,
+    Menu,
+    MenuItem,
+    ListItemIcon,
+    ListItemText,
+    ClickAwayListener,
+} from '@mui/material';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { toast } from 'react-toastify';
 
-export default function OptionsMenu()
+const OptionsMenu: React.FC<{ currentUserId: string; postId: string; onDelete?: (postId: string) => void }> = ({ currentUserId, postId, onDelete }) =>
 {
-    const [open, setOpen] = useState(false)
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const open = Boolean(anchorEl)
+    const [isDeleting, setIsDeleting] = useState(false)
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget)
+    const handleClose = () => setAnchorEl(null)
+
+    const deletePost = async () =>
+    {
+        if (!currentUserId || !postId)
+            return
+
+        setIsDeleting(true)
+
+        try
+        {
+            const res = await fetch('/api/posts/delete_post',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ postId, currentUserId }),
+            })
+
+            if (!res.ok)
+                console.error('Error deleting post:', res.statusText)
+
+            const data = await res.json()
+            if (data.type === 'error')
+            {
+                toast.error(data.message || 'Error deleting post')
+                return
+            }
+
+            toast.success(data.message || 'Post deleted successfully!')
+            handleClose()
+            if (onDelete)
+                onDelete(postId)
+        } catch (error) {
+            console.error('Network error deleting post: ', error)
+        } finally {
+            setIsDeleting(false)
+        }
+    }
 
     return (
-        <div className="relative inline-block text-left">
+        <ClickAwayListener onClickAway={handleClose}>
             <div>
-                <button
-                    type="button"
-                    className="-m-2 flex items-center rounded-full p-2 text-gray-400 hover:text-gray-600"
+                <IconButton
+                    aria-label="more"
+                    aria-controls={open ? 'post-options-menu' : undefined}
                     aria-haspopup="true"
-                    aria-expanded={open}
-                    onClick={() => setOpen(!open)}
+                    onClick={handleClick}
+                    sx={{   
+                        border: 'none',
+                    }}
+                    disabled={isDeleting}
                 >
-                    <span className="sr-only">Open options</span>
-                    <svg
-                        className="h-5 w-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        aria-hidden="true"
-                    >
-                        <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
-                    </svg>
-                </button>
-            </div>
+                    <MoreVertIcon />
+                </IconButton>
 
-            { open && (
-                <div
-                    className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    role="menu"
-                    aria-orientation="vertical"
+                <Menu
+                    id="post-options-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
                 >
-                    <div className="py-1" role="none">
-                        <a href="#" className="text-gray-700 flex px-4 py-2 text-sm" role="menuitem">
-                            <svg
-                                className="mr-3 h-5 w-5 text-gray-400"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                            <span>Add to favorites</span>
-                        </a>
-                        <a href="#" className="text-gray-700 flex px-4 py-2 text-sm" role="menuitem">
-                            <svg
-                                className="mr-3 h-5 w-5 text-gray-400"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M6.28 5.22a.75.75 0 010 1.06L2.56 10l3.72 3.72a.75.75 0 01-1.06 1.06L.97 10.53a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 0zm7.44 0a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06L17.44 10l-3.72-3.72a.75.75 0 010-1.06zM11.377 2.011a.75.75 0 01.612.867l-2.5 14.5a.75.75 0 01-1.478-.255l2.5-14.5a.75.75 0 01.866-.612z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                            <span>Embed</span>
-                        </a>
-                        <a href="#" className="text-gray-700 flex px-4 py-2 text-sm" role="menuitem">
-                            <svg
-                                className="mr-3 h-5 w-5 text-gray-400"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                aria-hidden="true"
-                            >
-                                <path d="M3.5 2.75a.75.75 0 00-1.5 0v14.5a.75.75 0 001.5 0v-4.392l1.657-.348a6.449 6.449 0 014.271.572 7.948 7.948 0 005.965.524l2.078-.64A.75.75 0 0018 12.25v-8.5a.75.75 0 00-.904-.734l-2.38.501a7.25 7.25 0 01-4.186-.363l-.502-.2a8.75 8.75 0 00-5.053-.439l-1.475.31V2.75z" />
-                            </svg>
-                            <span>Report content</span>
-                        </a>
-                    </div>
-                </div>
-            )}
-        </div>
+                    <MenuItem onClick={deletePost} disabled={isDeleting}>
+                        <ListItemIcon>
+                            <DeleteIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Delete post" />
+                    </MenuItem>
+                    {/* <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                            <FavoriteBorderIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Add to favorites" />
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                            <CodeIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Embed" />
+                    </MenuItem>
+                    <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                            <ReportIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Report content" />
+                    </MenuItem> */}
+                </Menu>
+            </div>
+        </ClickAwayListener>
     )
 }
+
+export default OptionsMenu

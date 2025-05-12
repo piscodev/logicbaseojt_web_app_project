@@ -2,26 +2,9 @@ import { dateConv } from '@/lib/DateConverter'
 import { useSession } from 'next-auth/react';
 import React, { useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Avatar, Box, Button, IconButton, Menu, MenuItem, Paper, Typography } from '@mui/material';
+import { Avatar, Box, Button, Menu, MenuItem, Paper, Typography } from '@mui/material';
+import { Comments } from '@/app/utils/interfaces';
 
-interface Comments
-{
-    comment:
-    {
-        comment_id: string,
-        comment_post_id: string,
-        commenter_user_id: string,
-        comment_text: string,
-        created_at: string,
-        updated_at: string,
-        first_name: string,
-        last_name: string,
-        profile_image: string,
-    }
-    onDelete?: (commentId: string) => void;
-}
-
-// const PreviousComments: React.FC<Comments> = ({ comment }) =>
 const PreviousComments: React.FC<Comments> = ({ comment, onDelete }) =>
 {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
@@ -29,7 +12,6 @@ const PreviousComments: React.FC<Comments> = ({ comment, onDelete }) =>
 
     const { data: session } = useSession()
     const isOwner = session?.user?.id === comment.commenter_user_id
-
 
     const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => setAnchorEl(event.currentTarget)
     const handleMenuClose = () => setAnchorEl(null)
@@ -81,13 +63,13 @@ const PreviousComments: React.FC<Comments> = ({ comment, onDelete }) =>
                     sx={{ width: 32, height: 32 }}
                 />
                 <Box>
-                    <Typography variant="body2" color="text.primary">
+                    <Typography variant="body2" color="text.primary" component="div">
                         {comment.first_name} {comment.last_name}
                     </Typography>
-                    <Typography variant="caption" color="text.secondary" fontSize={11}>
-                        {dateConv(new Date(comment.created_at).getTime())}
+                    <Typography variant="caption" color="text.secondary" fontSize={11} component="div">
+                        {dateConv(comment.created_at)}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" mt={1}>
+                    <Typography variant="body2" color="text.secondary" mt={1} component="div">
                         {comment.comment_text}
                     </Typography>
                 </Box>

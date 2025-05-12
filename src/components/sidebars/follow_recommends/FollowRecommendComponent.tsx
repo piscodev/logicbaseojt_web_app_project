@@ -1,12 +1,5 @@
+import { UserRecommendation } from '@/app/utils/interfaces';
 import React, { useEffect, useState } from 'react';
-
-interface UserRecommendation
-{
-    user_id: string;
-    first_name: string;
-    last_name: string;
-    profile_image: string;
-}
 
 const FollowRecommendComponent = () =>
 {

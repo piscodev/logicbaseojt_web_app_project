@@ -1,14 +1,8 @@
 'use client'
 
+import { TrendingTopic } from '@/app/utils/interfaces'
 import { CircularProgress } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-
-interface TrendingTopic
-{
-    comment_post_id: string
-    comment_count: number
-    latest_comment_date: string
-}
 
 const TrendingComponent = () =>
 {
@@ -67,10 +61,10 @@ const TrendingComponent = () =>
                 trendingTopics.map((topic, index) => (
                     <li key={index} aria-labelledby={`trending-topic-${index}`} className="flex space-x-3 py-4">
                         <div className="flex-shrink-0">
-                            {/* <img className="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="Kristin Watson" /> */}
+                            <img className="h-8 w-8 rounded-full" src={topic.media_url ? topic.media_url : "/logo.png"} alt="Image" />
                         </div>
                         <div className="min-w-0 flex-1">
-                            <p className="text-sm text-gray-800">post id test: {topic.comment_post_id}</p>
+                            <p className="text-sm text-gray-800">{topic.content.length >= 50 ? topic.content.slice(0, 50) : topic.content}</p>
                             <div className="mt-2 flex">
                                 <span className="inline-flex items-center text-sm">
                                     <button type="button" className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">

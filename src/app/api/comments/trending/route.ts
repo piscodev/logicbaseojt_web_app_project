@@ -11,14 +11,18 @@ export async function GET()
         conn = await pool.getConnection()
         const [trendingTopics] = await conn.query<ResultSetHeader>(`
             SELECT 
-                comment_post_id,
+                c.comment_post_id,
+                p.post_id, p.content, p.media_url,
                 COUNT(*) AS comment_count,
-                MAX(created_at) AS latest_comment
-            FROM comments
-            GROUP BY comment_post_id
+                MAX(c.created_at) AS latest_comment
+            FROM comments AS c
+            INNER JOIN posts AS p ON p.post_id = c.comment_post_id
+            GROUP BY c.comment_post_id
             ORDER BY comment_count DESC, latest_comment DESC
             LIMIT 5
         `)
+
+        console.log("Trending Topics: ", trendingTopics)
 
         return NextResponse.json(trendingTopics)
     } catch (error) {

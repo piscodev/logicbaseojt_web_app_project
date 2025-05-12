@@ -8,7 +8,7 @@ const Testering = () =>
 {
     const snowflake = new Snowflake();
     const generatedId = snowflake.GenerateID();
-    const decodedDate = new Date(snowflake.decodetoDate(generatedId));
+    const decodedDate = snowflake.decodetoDate(generatedId);
     console.log("Generated ID:", generatedId);
     console.log("Generated Length:", generatedId.length);
     console.log("Decoded Date:", decodedDate);
