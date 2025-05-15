@@ -5,6 +5,7 @@ import { authConfig } from "@/lib/auth.config";
 import Snowflake from "@/lib/snowflake_tinapa/snowflake";
 import { FieldPacket } from "mysql2";
 import db from "./lib/database/db";
+import dayjs from "dayjs";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +46,8 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth(
                 let conn = null
                 // const snowflake = new Snowflake()
                 // const generatedId = snowflake.GenerateID()
+
+                const now = dayjs().format('YYYY-MM-DD HH:mm:ss')
 
                 conn = await db.getConnection()
                 const checkUser = "SELECT * FROM users WHERE email = ? LIMIT 1"
@@ -97,20 +100,20 @@ export const { handlers: { GET, POST }, auth, signIn, signOut } = NextAuth(
                     }
 
                     const udata = data[0]
-                    const newUser = "INSERT INTO users (user_id, google_id, email, first_name, last_name, profile_image, contact_number, birthdate, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())"
+                    const newUser = "INSERT INTO users (user_id, google_id, email, first_name, last_name, profile_image, contact_number, birthdate, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
                     // const [result] : [ResultSetHeader, FieldPacket[]] = await conn.execute(newUser, [generatedId, udata.google_id, udata.email, udata.first_name, udata.last_name, udata.contact_number, udata.birthdate || null]) as [ResultSetHeader, FieldPacket[]]
-                    await conn.execute(newUser, [generatedId, udata.google_id, udata.email, udata.first_name, udata.last_name, udata.profile_image, udata.contact_number, udata.birthdate || null])
+                    await conn.execute(newUser, [generatedId, udata.google_id, udata.email, udata.first_name, udata.last_name, udata.profile_image, udata.contact_number, udata.birthdate || null, now])
 
                     token.userId = generatedId
                     console.log("User created: ", generatedId)
 
-                    await conn.execute("UPDATE users SET last_login = NOW() WHERE user_id = ?", [generatedId])
+                    await conn.execute("UPDATE users SET last_login = ? WHERE user_id = ?", [generatedId, now])
                 } else if (row_check.length > 0) {
                     const userRow = row_check[0]
                     console.log("User found: ", userRow.user_id)
                     token.userId = userRow.user_id
 
-                    await conn.execute("UPDATE users SET last_login = NOW() WHERE user_id = ?", [userRow.user_id])
+                    await conn.execute("UPDATE users SET last_login = ? WHERE user_id = ?", [userRow.user_id, now])
                     // console.log("User created: ", userRow.user_id.toString())
                 }
             }

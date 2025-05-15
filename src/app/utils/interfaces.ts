@@ -16,14 +16,19 @@ export interface PostItemProps
         created_at: string;
         updated_at: string;
         post_id: string;
+        price: number;
+        quantity: number;
         content: string;
         media_url: string; // commaseparated urls
-        media_type: "image" | "video" | null;
+        // media_type: "image" | "video" | null;
+        mediaList: { url: string; type: "image" | "video" }[];
         total_likes: number;
         comment_count: bigint;
         first_name: string;
         last_name: string;
         profile_image: string;
+        post_contact_number: string;
+        contact_number: string;
         
     // }
 }
@@ -99,4 +104,16 @@ export interface PostCommentProps
     userId: string
     likes: number
     comments: bigint
+    contact_number: string
+}
+
+export interface Stories
+{
+    id: number
+    userId: string
+    videoUrl: string
+    name: string
+    avatar: string
+    thumbnail: string
+    isCreate: false
 }

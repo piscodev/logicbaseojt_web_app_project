@@ -6,12 +6,11 @@ import { Box, Card, CircularProgress } from '@mui/material';
 import PostItem from '../create_post/CreatePost';
 import { PostItemProps } from '@/app/utils/interfaces';
 import { fetchPosts } from '@/app/utils/fetchPosts';
+import Reels from '../reels/Reels';
 
 const Feed: React.FC<{ userId: string }> = ({ userId }) =>
 {
     const [post, setPost] = useState<PostItemProps[]>([])
-    // const [loading, setLoading] = useState(true)
-
     const [offset, setOffset] = useState(0)
     const [loadingMore, setLoadingMore] = useState(false)
     const [hasMore, setHasMore] = useState(true)
@@ -37,6 +36,7 @@ const Feed: React.FC<{ userId: string }> = ({ userId }) =>
 
     useEffect(() =>
     {
+
         if (typeof window === "undefined" || !window.IntersectionObserver)
             return
 
@@ -65,6 +65,9 @@ const Feed: React.FC<{ userId: string }> = ({ userId }) =>
 
     return (
         <>
+            <div className="flex justify-between items-center mb-4">
+                <Reels currentUserId={userId}/>
+            </div>
             <NewPost userId={userId} onNewPost={handleNewPost} />
             <ul role="list" className="space-y-4">
                 {post && post.map((item, i) => (

@@ -1,5 +1,6 @@
 import { auth } from "@/auth"
 import pool from "@/lib/database/db"
+import dayjs from "dayjs"
 import { ResultSetHeader, RowDataPacket } from "mysql2"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -16,6 +17,8 @@ export async function POST(request: NextRequest)
     let conn = null
     try
     {
+        const now = dayjs().format('YYYY-MM-DD HH:mm:ss')
+
         conn = await pool.getConnection()
         const userId = session?.user ? session.user.id : "0"
         if (!userId || userId === "0")
@@ -27,7 +30,7 @@ export async function POST(request: NextRequest)
         if (checkFollowRows.length > 0)
             return NextResponse.json({ followed: true }, { status: 200 })
 
-        const [res] = await conn.execute<ResultSetHeader>("INSERT INTO followers (user_id, followed_user_id, created_at) VALUES (?, ?, NOW())", [userId, toFollowUserId])
+        const [res] = await conn.execute<ResultSetHeader>("INSERT INTO followers (user_id, followed_user_id, created_at) VALUES (?, ?, ?)", [userId, toFollowUserId, now])
         if (res.affectedRows === 0)
             return NextResponse.json({ followed: false }, { status: 200 })
 

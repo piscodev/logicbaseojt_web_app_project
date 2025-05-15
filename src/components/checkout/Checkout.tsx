@@ -76,7 +76,7 @@ export default function Checkout(props: { disableCustomTheme?: boolean }) {
             gap: 4,
           }}
         >
-          <SitemarkIcon />
+          {/* <SitemarkIcon /> */}
           <Box
             sx={{
               display: 'flex',

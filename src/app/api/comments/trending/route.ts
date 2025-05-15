@@ -22,7 +22,6 @@ export async function GET()
             LIMIT 5
         `)
 
-        console.log("Trending Topics: ", trendingTopics)
 
         return NextResponse.json(trendingTopics)
     } catch (error) {

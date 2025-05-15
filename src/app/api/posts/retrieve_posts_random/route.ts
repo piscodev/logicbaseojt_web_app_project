@@ -5,8 +5,6 @@ import { NextRequest, NextResponse } from "next/server"
 import pool from "@/lib/database/db"
 import { PostsData } from "@/app/utils/interfaces"
 
-
-
 export async function POST(request: NextRequest)
 {
     const { offset } = await request.json()
@@ -52,9 +50,7 @@ export async function POST(request: NextRequest)
         `
             SELECT 
                 p.*,
-                u.first_name,
-                u.last_name,
-                u.profile_image,
+                u.*,
                 COALESCE(c.comment_count, 0) AS comment_count,
                 ? AS user_id, -- always output viewer's user_id
                 f.followed_user_id   -- only filled if the post is from a followed user

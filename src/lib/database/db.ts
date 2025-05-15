@@ -18,6 +18,7 @@ const pool = mysql.createPool({
   connectTimeout: 60000,
   timezone: '+08:00',
   supportBigNumbers: true,
+  charset: "utf8mb4",
   // bigNumberStrings: true, // important!
 })
 

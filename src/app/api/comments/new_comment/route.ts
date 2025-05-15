@@ -1,6 +1,7 @@
 import { auth } from "@/auth"
 import pool from "@/lib/database/db"
 import Snowflake from "@/lib/snowflake_tinapa/snowflake"
+import dayjs from "dayjs"
 import { ResultSetHeader } from "mysql2"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -25,13 +26,14 @@ export async function POST(request: NextRequest)
 
         const sf = new Snowflake()
         const commentId = sf.GenerateID()
+        const now = dayjs().format('YYYY-MM-DD HH:mm:ss')
 
         conn = await pool.getConnection()
 
         console.log("Inserting comment:", { commentId, postId, userId, content })
 
-        const queryInsertComment = "INSERT INTO comments (comment_id, comment_post_id, commenter_user_id, comment_text, created_at) VALUES (?, ?, ?, ?, NOW())"
-        const [insertComment] = await conn.execute<ResultSetHeader>(queryInsertComment, [commentId, postId, userId, content])
+        const queryInsertComment = "INSERT INTO comments (comment_id, comment_post_id, commenter_user_id, comment_text, created_at) VALUES (?, ?, ?, ?, ?)"
+        const [insertComment] = await conn.execute<ResultSetHeader>(queryInsertComment, [commentId, postId, userId, content, now])
 
         if (insertComment.affectedRows === 0)
             return NextResponse.json({ type: "error", message: "Failed to insert comment!" }, { status: 500 })

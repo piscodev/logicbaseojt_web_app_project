@@ -1,55 +1,45 @@
 'use client'
 
 import Box from "@mui/material/Box";
-// import Container from "@mui/material/Container";
-// import { useState } from "react";
 import Heading from "./home-page/Heading";
 import { useSession } from "next-auth/react";
 import FollowRecommendComponent from "./sidebars/follow_recommends/FollowRecommendComponent";
 import { Suspense } from "react";
 import { Card, CardContent, CircularProgress, Typography } from "@mui/material";
 import React from "react";
-// import { Container } from "@mui/material";
-export default function TestPage()
-{
-    // const [menuOpen, setMenuOpen] = useState(false);
-    // const [userMenuOpen, setUserMenuOpen] = useState(false);
-    const { data: session } = useSession()
+import Feed from "./posts/feed/Feed";
 
+export default function MainContent()
+{
+    const { data: session } = useSession()
     const userId = session?.user?.id ?? "0";
 
-    const Feed = React.lazy(() => import('./posts/feed/Feed'))
-    const TrendingComponent = React.lazy(() => import('./comments/trending/TrendingComponent'))
+    // const Feed = React.lazy(() => import('./posts/feed/Feed'))
+    const TrendingComponent = React.lazy(() => import('./sidebars/trending/TrendingComponent'))
 
-  return (
-    <Box
-        id="hero"
-        sx={(theme) => ({
-            // width: '100%',
-            // backgroundRepeat: 'no-repeat',
-
-            backgroundImage:
-                'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 90%), transparent)',
-            ...theme.applyStyles('dark', {
-                backgroundImage:
-                'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)',
-            }),
-            colorText   : '#333333',
-            // minHeight: '100vh', // Full viewport height
-            // overflow: 'auto',   // Allow scrolling
-            // paddingBottom: '2rem',
-        })}
-    >
+    return (
         <Box
+            id="hero"
             sx={(theme) => ({
-                backgroundSize: 'contain',
-                backgroundImage: 'var(--items-imageLight)',
+                backgroundRepeat: 'no-repeat',
+                backgroundImage:
+                    'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 90%), transparent)',
                 ...theme.applyStyles('dark', {
-                    backgroundImage: 'var(--items-imageDark)',
+                    backgroundImage:
+                    'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(210, 100%, 16%), transparent)',
                 }),
+                colorText   : '#333333',
             })}
         >
-            {/* <div> */}
+            <Box
+                sx={(theme) => ({
+                    backgroundSize: 'contain',
+                    backgroundImage: 'var(--items-imageLight)',
+                    ...theme.applyStyles('dark', {
+                        backgroundImage: 'var(--items-imageDark)',
+                    }),
+                })}
+            >
                 <Suspense fallback={<div className="flex justify-center"><CircularProgress /></div>}>
                     { session && <Heading session={{ ...session, session }} /> }
                 </Suspense>
@@ -166,9 +156,9 @@ export default function TestPage()
                                 {/* <h1 className="sr-only">Recent questions</h1> */}
                                 {/* <ul role="list" className="space-y-4"> */}
                                     {/* <h1 className="text-2xl font-bold mb-6">Recent Questions</h1> */}
-                                    <Suspense fallback={<div className="flex justify-center"><CircularProgress /></div>}>
+                                    {/* <Suspense fallback={<div className="flex justify-center"><CircularProgress /></div>}> */}
                                         {session && <Feed userId={userId} />}
-                                    </Suspense>
+                                    {/* </Suspense> */}
 
                                 {/* </ul> */}
                             {/* </div> */}
@@ -191,9 +181,9 @@ export default function TestPage()
                                                             sx={{ color: 'text.secondary' }}
                                                             component="div"
                                                         ></Typography>
-                                                        <Suspense fallback={<div className="flex justify-center"><CircularProgress /></div>}>
+                                                        {/* <Suspense fallback={<div className="flex justify-center"><CircularProgress /></div>}> */}
                                                             <FollowRecommendComponent />
-                                                        </Suspense>
+                                                        {/* </Suspense> */}
                                                     </CardContent>
                                                 </ul>
                                             </div>
@@ -276,8 +266,7 @@ export default function TestPage()
 
                     </div>
                 </div>
-            {/* </div> */}
+            </Box>
         </Box>
-    </Box>
-  );
+    )
 }

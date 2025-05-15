@@ -1,5 +1,5 @@
 import pool from "@/lib/database/db"
-import { ResultSetHeader, RowDataPacket } from "mysql2"
+import { ResultSetHeader } from "mysql2"
 import { NextResponse } from "next/server"
 
 export async function POST(request: Request)

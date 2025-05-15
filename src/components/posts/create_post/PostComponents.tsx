@@ -1,8 +1,9 @@
 
 import { PostCommentProps } from '@/app/utils/interfaces'
+import { Phone } from '@mui/icons-material'
 import React, { memo, useEffect, useState } from 'react'
 
-const PostComponents: React.FC<PostCommentProps> = ({ likes, comments, postId, userId}) =>
+const PostComponents: React.FC<PostCommentProps> = ({ likes, comments, postId, userId, contact_number }) =>
 {
     const [liked, setLiked] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -120,6 +121,12 @@ const PostComponents: React.FC<PostCommentProps> = ({ likes, comments, postId, u
                         <span className="sr-only">views</span>
                     </button>
                 </span> */}
+                <span className="inline-flex items-center text-sm">
+                    <button type="button" className="inline-flex space-x-2 text-gray-400 hover:text-gray-500">
+                        {contact_number ? <Phone /> : null }
+                        <span className="font-medium">{contact_number}</span>
+                    </button>
+                </span>
             </div>
             <div className="flex text-sm">
                 <span className="inline-flex items-center text-sm">
