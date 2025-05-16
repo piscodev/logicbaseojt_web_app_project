@@ -22,7 +22,6 @@ export async function GET()
             LIMIT 5
         `)
 
-
         return NextResponse.json(trendingTopics)
     } catch (error) {
         console.error("Error fetching trending topics: ", error)

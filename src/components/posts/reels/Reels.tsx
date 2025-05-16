@@ -18,168 +18,9 @@ const createStory =
     isCreate: true
 }
 
-
-
-// const generateThumbnail = (file: File): Promise<string> =>
-// {
-//     return new Promise((resolve, reject) =>
-//     {
-//         const video = document.createElement('video')
-
-//         // mag start kuha frame after .5 sec para di mag start sa black screen ig generate sa thumbnail
-//         video.onloadedmetadata = () => video.currentTime = Math.min(1, video.duration)
-//         video.onseeked = () =>
-//         {
-//             const canvas = document.createElement("canvas")
-//             canvas.width = video.videoWidth
-//             canvas.height = video.videoHeight
-      
-//             const ctx = canvas.getContext("2d")
-//             if (!ctx)
-//                 return reject("Failed to get canvas context")
-      
-//             ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-//             const dataUrl = canvas.toDataURL("image/jpeg")
-//             resolve(dataUrl)
-//         }
-
-//         video.onerror = (e) => reject("Error loading video")
-//         video.src = URL.createObjectURL(file)
-//         // required for some browsers
-//         video.load()
-//     })
-// }
-
 const Reels: React.FC<{ currentUserId: string }> = ({ currentUserId }) =>
 {
-    const [stories, setStories] = useState(
-    [
-        createStory,
-        // {
-        //     id: 2,
-        //     name: "P1",
-        //     image: "/logo.png",
-        //     videoUrl: "https://www.w3schools.com/html/movie.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },
-        // {
-        //     id: 3,
-        //     name: "P2",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/men/3.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },
-        // {
-        //     id: 4,
-        //     name: "P3",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-5s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/men/4.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },
-        // {
-        //     id: 5,
-        //     name: "P4",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 6,
-        //     name: "P5",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 7,
-        //     name: "P6",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 8,
-        //     name: "P7",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 9,
-        //     name: "P8",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 10,
-        //     name: "P9",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 11,
-        //     name: "P10",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 12,
-        //     name: "P11",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 13,
-        //     name: "P12",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 14,
-        //     name: "P13",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 15,
-        //     name: "P14",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // },{
-        //     id: 16,
-        //     name: "P15",
-        //     image: "/logo.png",
-        //     videoUrl: "https://sample-videos.com/video123/mp4/720/sample-10s.mp4",
-        //     avatar: "https://randomuser.me/api/portraits/women/5.jpg",
-        //     thumbnail: "https://randomuser.me/api/portraits/women/2.jpg",
-        //     isCreate: false,
-        // }
-    ])
+    const [stories, setStories] = useState([ createStory, ])
 
     const [playingId, setPlayingId] = useState<number | null>(null)
     const [startIndex, setStartIndex] = useState(0)
@@ -627,6 +468,7 @@ const Reels: React.FC<{ currentUserId: string }> = ({ currentUserId }) =>
                                     muted
                                     autoPlay
                                     playsInline
+                                    loop
                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                 />
                             ) : (
@@ -677,7 +519,6 @@ const Reels: React.FC<{ currentUserId: string }> = ({ currentUserId }) =>
                             sx={{ position: 'absolute', top: '50%', left: -25, transform: 'translateY(-50%)', borderRadius: '25px', backgroundColor: 'white' }}
                             // disabled={startIndex === 0 && playingId === 1}
                             disabled={stories.findIndex(s => s.id === playingId) <= 1}
-
                         >
                             <ArrowBackIos sx={{ marginLeft: 1,}} />
                         </IconButton>

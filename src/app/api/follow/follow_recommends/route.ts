@@ -39,7 +39,7 @@ export async function GET()
                 SELECT followed_user_id FROM followers WHERE user_id = ?
             )
             ORDER BY RAND()
-            LIMIT 5
+            LIMIT 10
         `
 
         const [rows]: [UserRow[], FieldPacket[]] = await conn.query(recommendQuery, [session.user.id, session.user.id]) as [UserRow[], FieldPacket[]]

@@ -129,7 +129,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
       <SignUpContainer direction="column" justifyContent="space-between">
         <Card variant="outlined">
-          <SitemarkIcon />
+          {/* <SitemarkIcon /> */}
           <Typography
             component="h1"
             variant="h4"
@@ -205,7 +205,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           </Divider> */}
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <div className="py-2 px-1 border-white text-xs md:text-base md:py-1 md:px-2 border rounded hover:bg-slate-100 hover:text-black focus-visible:bg-slate-100 focus-visible:text-black">
-                <SocialLoginButton provider="google" />
+                <SocialLoginButton provider="Google" />
             </div>
 
             {/* <Button

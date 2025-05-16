@@ -24,22 +24,4 @@ const pool = mysql.createPool({
 
 export const getConnection = promisify(pool.getConnection).bind(pool)
 
-export const query = async (sql: string, params: unknown[]) =>
-{
-    let connection
-    try
-    {
-        connection = await pool.getConnection()
-        const [rows]: [unknown[], FieldPacket[]] = await connection.query(sql, params) as [unknown[], FieldPacket[]]
-
-        return rows
-    } catch (error) {
-        console.error('Database query error:', error)
-    } finally {
-
-      if (connection)
-          connection.release()
-    }
-}
-
 export default pool

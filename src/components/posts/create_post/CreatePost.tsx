@@ -63,17 +63,20 @@ const PostItem: React.FC<{ post: PostItemProps; currentUserId: string; onDelete:
     {
         const res = await fetch("/api/paymongo/create_checkout",
         {
-          method: "POST",
-          body: JSON.stringify({
-            postId: post.post_id,
-            price: (post.price / 1000).toFixed(2),
-            quantity: 1,
-            name: post.first_name + " " + post.last_name,
-            email: post.last_name + "@yahoo.com",
-            description: post.content.slice(0, 30), // optional
-          }),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                postId: post.post_id,
+                price: post.price,
+                quantity: 1,
+                name: post.first_name + " " + post.last_name,
+                email: post.last_name + "@yahoo.com",
+                description: post.content.slice(0, 30), // optional
+            }),
         })
-      
+
         const data: { url: string } = await res.json()
         window.location.href = data.url
     }
