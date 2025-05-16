@@ -18,7 +18,6 @@ import {
 import { nl2br } from "@/lib/TextSpacingConv";
 import { sanitizeHTML } from "@/lib/Sanitize";
 import { PostItemProps } from "@/app/utils/interfaces";
-import { Phone } from "@mui/icons-material";
 
 // const PostItem: React.FC<{ post: PostItemProps; currentUserId: string }> = ({ post, currentUserId }) => 
 const PostItem: React.FC<{ post: PostItemProps; currentUserId: string; onDelete: (postId: string) => void }> = ({ post, currentUserId, onDelete }) =>
@@ -70,7 +69,7 @@ const PostItem: React.FC<{ post: PostItemProps; currentUserId: string; onDelete:
             body: JSON.stringify({
                 postId: post.post_id,
                 price: post.price,
-                quantity: 1,
+                quantity: post.quantity,
                 name: post.first_name + " " + post.last_name,
                 email: post.last_name + "@yahoo.com",
                 description: post.content.slice(0, 30), // optional
