@@ -6,13 +6,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   const { postId, price, quantity, name, email, description } = await req.json();
 
-  const apiKey = "sk_test_JazfktkvScra2zttD7Mc1Lyo"
-  // const apiKey = "sk_test_2byzkVErtpKCpLK9hkFT37gn"
   let url = 'https://api.paymongo.com/v1/checkout_sessions';
   const headers = {
     accept: 'application/json',
     'Content-Type': 'application/json',
-    authorization: `Basic ${btoa(`${apiKey}:`)}`
+    authorization: `Basic ${btoa(`${process.env.PAYMONGO_SECRET_KEY}:`)}`
   };
 
   const data = {
@@ -25,17 +23,16 @@ export async function POST(req: NextRequest) {
         line_items: 
         [
           {
-            "amount":price,
+            "amount": price * 100, // payMongo expects amount in cents
             "currency":"PHP",
             "description": description,
             "images":[
               "https://images.unsplash.com/photo-1612346903007-b5ac8bb135bb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"
             ],
-            "name":"Beanines",
-            "quantity":quantity
+            "name":name,
+            "quantity":1
           }
-        ]
-        ,
+        ],
         description: description,
         payment_method_types: ['gcash'],
         success_url: String(process.env.NEXTAUTH_URL),

@@ -12,7 +12,7 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
-import { SitemarkIcon } from './CustomIcons';
+// import { SitemarkIcon } from './CustomIcons';
 import { SocialLoginButton } from '../SocialLoginButton';
 
 const Card = styled(MuiCard)(({ theme }) => ({
