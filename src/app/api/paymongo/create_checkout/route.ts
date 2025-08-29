@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { postId, price, quantity, name, email, description } = await req.json();
+  console.log(postId, price, quantity, name, email, description)
 
   let url = 'https://api.paymongo.com/v1/checkout_sessions';
   const headers = {
@@ -13,6 +14,8 @@ export async function POST(req: NextRequest) {
     authorization: `Basic ${btoa(`${process.env.PAYMONGO_SECRET_KEY}:`)}`
   };
 
+  console.log(String(process.env.PAYMONGO_SECRET_KEY), process.env.PAYMONGO_SECRET_KEY, btoa(`${process.env.PAYMONGO_SECRET_KEY}:`))
+  console.log(url)
   const data = {
     data: {
       attributes: {
