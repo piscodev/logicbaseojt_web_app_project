@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         line_items: 
         [
           {
-            "amount": price * 100, // payMongo expects amount in cents
+            "amount": price * 100,
             "currency":"PHP",
             "description": description,
             "images":[

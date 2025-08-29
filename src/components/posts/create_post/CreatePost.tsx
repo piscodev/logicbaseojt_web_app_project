@@ -97,7 +97,7 @@ const PostItem: React.FC<{ post: PostItemProps; currentUserId: string; onDelete:
                             </p>
                         </div>
                         <div className="flex flex-shrink-0 self-center">
-                            {post.price !== 0 && (
+                            {post.price > 0 && (
                                 <>
                                     <Badge badgeContent={post.quantity + "x"} color="secondary" />
                                     <Button
